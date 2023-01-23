@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatKC Timestamps
 // @namespace    https://github.com/Voxalice/
-// @version      1
+// @version      2
 // @description  Automatically adds timestamps to messages.
 // @author       Voxalice
 // @match        https://stream.mattkc.com/
@@ -10,10 +10,10 @@
 // @grant        none
 // ==/UserScript==
 
-socket.addEventListener('message', (event) => {
-    var b = JSON.parse(event.data);
-    if (b.type && b.type == "chat") {
-        document.querySelector("[data-message-id='"+lastMessageReceived+"']").insertAdjacentHTML("beforeend", ` <span class='bgtext'>(${new Date(b.data.time).toLocaleString()})</span>`)
-        document.querySelector("head").insertAdjacentHTML("beforeend", `<style>.bgtext{color:gray;font-size:75%}`)
+socket.onmessage = ((e)=>{
+    var b = JSON.parse(e.data);
+    if (b.type == "chat") {
+        document.querySelector("head").insertAdjacentHTML("beforeend",` <style>.bgtext{color:gray;font-size:75%}</style>`)
+        document.querySelector(`[data-message-id='${lastMessageReceived}']`).insertAdjacentHTML("beforeend",` <span class='bgtext'>(${new Date(b.data.time).toLocaleString()})</span>`)
     }
 });
